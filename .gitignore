@@ -1,0 +1,42 @@
+## Core LaTeX auxiliary files
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.synctex.gz
+*.toc
+*.out
+
+## Bibliography files
+*.bbl
+*.blg
+*.run.xml
+*.bcf
+
+## Table of contents / Lists
+*.lof
+*.lot
+*.nav
+*.snm
+*.vrb
+
+## Engine specific (LuaLaTeX / XeLaTeX)
+*.lua
+*.fontspec
+
+## Indexing and Glossaries
+*.glo
+*.glg
+*.gls
+*.ist
+*.idx
+*.ind
+*.ilg
+
+## PythonTeX / Minted
+_minted*
+*.pytxcode
+pythontex-files-*/
+
+## PDF Output
+*.pdf
