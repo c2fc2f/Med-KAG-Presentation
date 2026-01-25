@@ -1,0 +1,38 @@
+\section{La problématique et les objectifs}
+
+\begin{frame}{Problématique~: Les limites des LLM en clinique}
+  L'intégration de l'IA en pratique clinique offre un potentiel pour l'analyse
+  des dossiers médicaux~\cite{ALGHAMDI2025102528,
+  zhou2024surveylargelanguagemodels}.
+
+  \medskip{}
+
+  \begin{itemize}
+    \item<2-> \textbf{Opacité~:} Difficulté à tracer l'origine.
+    \item<3-> \textbf{Hallucinations~:} Risque de génération de données
+      médicales erronées ou non vérifiées~\cite{10.1145/3703155}.
+    \item<4-> \textbf{Limites du RAG classique~:} Le RAG
+      classique~\cite{gao2024modularragtransformingrag} repose sur du texte
+      non structuré, ce qui peut manquer de précision relationnelle.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Objectifs de \emph{Med-KAG}}
+  Med-KAG\footnote{\url{https://github.com/c2fc2f/Med-KAG}} propose de passer
+  d'un RAG classique à une architecture de \textbf{Knowledge Augmented
+  Generation (KAG)}.
+
+  \medskip{}
+
+  \pause[]
+
+  \textbf{Les deux objectifs principaux~:}
+  \begin{enumerate}
+    \item<2-> \textbf{Minimiser les hallucinations~:} Contraindre les réponses
+      du modèle par des données factuelles issues d'une base structurée.
+    \item<3-> \textbf{Fournir une justification~:} Rendre le système
+      transparent en traçant l'origine du raisonnement via des connexions
+      vérifiables.
+  \end{enumerate}
+\end{frame}
+

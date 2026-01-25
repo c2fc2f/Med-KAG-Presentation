@@ -1,0 +1,65 @@
+\appendix
+
+\begin{frame}[fragile]{Exemple de requête et de graphe}
+  \begin{figure}[H]
+    \centering
+    \begin{minipage}[c]{0.55\textwidth}
+      \scriptsize
+      \textbf{Requête Cypher générée~:}
+        \begin{minted}[fontsize=\scriptsize, breaklines]{cypher}
+MATCH (c1:CUI)
+WHERE c1.name CONTAINS "flexor tendon"
+OPTIONAL MATCH (c1)-[r1:PAR|CHD|SY|RO]->(c2:CUI)
+OPTIONAL MATCH (c2)-[r2:PAR|CHD|SY|RO]->(c3:CUI)
+RETURN c1, c2, c3, r1, r2
+LIMIT 250
+        \end{minted}
+    \end{minipage}%
+    \hfill%
+    \begin{minipage}[c]{0.40\textwidth}
+      \centering
+      \includegraphics[width=0.85\textwidth]{graph_ex.png}
+    \end{minipage}
+    \caption{À gauche, la requête Cypher générée par le LLM~; à
+      droite, le sous-graphe UMLS récupéré servant de contexte ancré
+      pour la réponse.
+    }
+  \end{figure}
+\end{frame}
+
+\begin{frame}{Exemple de question et de réponse}
+  \textbf{Question~:}
+  \small{
+    \textit{
+      A junior orthopaedic surgery resident is completing a carpal tunnel
+      repair with the department chairman as the attending physician. During
+      the case, the resident inadvertently cuts a flexor tendon. The tendon is
+      repaired without complication. The attending tells the resident that the
+      patient will do fine, and there is no need to report this minor
+      complication that will not harm the patient, as he does not want to make
+      the patient worry unnecessarily. He tells the resident to leave this
+      complication out of the operative report. Which of the following is the
+      correct next action for the resident to take?
+    }
+  }
+
+  \textbf{Options~:}
+  \begin{itemize}
+    \item \small{\textit{
+          (A) Disclose the error to the patient and put it in the operative
+          report.
+      }}
+    \item \small{\textit{
+          (B) Tell the attending that he cannot fail to disclose this mistake.
+      }}
+    \item \small{\textit{
+          (C) Report the physician to the ethics committee.
+      }}
+    \item \small{\textit{
+          (D) Refuse to dictate the operative report.
+      }}
+  \end{itemize}
+
+  \textbf{Med-KAG Answer~:} \small{\textit{B}}
+\end{frame}
+

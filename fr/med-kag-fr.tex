@@ -1,0 +1,98 @@
+% LTeX: enabled=false
+\documentclass[
+  10pt,
+  aspectratio=169,
+  table,
+  french
+]{beamer}
+\usetheme{metropolis}
+
+\usepackage[french]{babel}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{bibentry}
+\usepackage{etoolbox}
+\usepackage{booktabs}
+\usepackage{minted}
+
+\definecolor{primary}{HTML}{191919}
+\definecolor{secondary}{HTML}{191919}
+
+\setbeamercolor{palette primary}{bg=primary, fg=white}
+\setbeamercolor{progress bar}{fg=primary}
+\setbeamercolor{title separator}{fg=primary}
+
+\setbeamercolor{structure}{fg=secondary}
+\setbeamerfont{structure}{series=\bfseries}
+
+\setbeamerfont{section in toc}{size=\large}
+
+\setbeamertemplate{section in toc}{
+  \inserttocsectionnumber.~\inserttocsection\par
+}
+
+\setbeamerfont{subsection in toc}{size=\normalsize}
+\setbeamertemplate{subsection in toc}{
+  \leavevmode\leftskip=1.5em
+  \inserttocsectionnumber.\inserttocsubsectionnumber~\inserttocsubsection\par
+}
+
+\graphicspath{{./resources/}}
+
+% LTeX: enabled=true
+
+\addtobeamertemplate{title page}{}{
+  \begin{tikzpicture}[remember picture,overlay]
+    \node[
+      anchor=south west,
+      xshift=0.5cm,
+      yshift=0.5cm
+    ] at (current page.south west) {
+      \includegraphics[height=1.2cm]{logo-univ-rouen-normandie-noir.png}
+    };
+    \node[
+      anchor=south east,
+      xshift=-0.5cm,
+      yshift=0.5cm
+    ] at (current page.south east) {
+      \includegraphics[height=1.2cm]{logo-litis.jpg}
+    };
+  \end{tikzpicture}
+}
+
+\title{Génération augmentée par des connaissances médicales}
+\subtitle{Des résultats préliminaires grâce à \emph{Med-KAG}}
+\author{Edouard Haddag, Gabriel Medeiros et Lina F. Soualmia}
+\institute{
+  Université de Rouen Normandie\\
+  INSA Rouen Normandie \\
+  Laboratoire d’Informatique, du Traitement de l’Information et des Systèmes
+  (LITIS)
+}
+\date{\today}
+
+\begin{document}
+
+{
+  \hfuzz=60pt
+  \vfuzz=60pt
+  \maketitle
+}
+
+\begin{frame}{Sommaire}
+  \tableofcontents{}
+\end{frame}
+
+\include{issue-objectives}
+\include{methods}
+\include{results}
+\include{conclusion}
+\include{appendix}
+
+\begin{frame}[allowframebreaks]{Références}
+  \bibliographystyle{abbrv}
+  \bibliography{references}
+\end{frame}
+
+\end{document}
+

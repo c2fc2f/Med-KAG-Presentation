@@ -1,0 +1,36 @@
+\section{Résultats}
+
+\begin{frame}{Évaluation sur le dataset \emph{MedQA-US
+  (MIRAGE)}~\cite{xiong2024benchmarkingretrievalaugmentedgenerationmedicine}}
+  \begin{table}
+    \centering
+    \begin{tabular}{lcc}
+      \toprule
+      \textbf{Modèle} & \textbf{Réponses correctes} & \textbf{Taux
+      de précision} \\
+      \midrule
+      \textbf{Native} (Qwen3--235B-A22B) & 1167/1273 & 91,67\% \\
+      \textbf{RAG} (Qwen3--235B-A22B + KG) & 1162/1273 & 91,28\% \\
+      \bottomrule
+    \end{tabular}
+    \caption{Précision comparative sur \emph{MedQA-US}.}
+  \end{table}
+
+  \pause[]
+
+  \begin{table}
+    \centering
+    \begin{tabular}{lccc}
+      \toprule
+      \textbf{Métrique} & \textbf{Moyenne} & \textbf{Médiane} &
+      \textbf{Non nulle} \\
+      \midrule
+      \textbf{Erreurs} (Requête invalide) & 0,22 & 0,00 & --- \\
+      \textbf{N\oe{}uds récupérés} & 23,92 & 0,00 & 502/1273 (39,4\%) \\
+      \textbf{Arêtes récupérées} & 27,92 & 0,00 & 254/1273 (20,0\%) \\
+      \bottomrule
+    \end{tabular}
+    \caption{Mesures de récupération (moyenne, médiane et non nulle).}
+  \end{table}
+\end{frame}
+

@@ -1,0 +1,61 @@
+\section{Méthodes}
+
+\begin{frame}{L'approche Knowledge Augmented Generation (KAG)}
+  Med-KAG se distingue du RAG classique par l'utilisation de connaissances
+  structurées~:
+
+  \medskip{}
+
+  \pause[]
+
+  \begin{itemize}
+    \item<2-> \textbf{Substitution du texte~:} Les documents non structurés
+      sont remplacée par l'exploitation d'un graphe de connaissances
+      (Knowledge Graph)~\cite{10.1145/3447772}.
+    \item<3-> \textbf{Ancrage sémantique~:} Utilisation du
+      \emph{Métathésaurus} de l'\emph{UMLS}~\cite{bodenreider2004unified}
+      comme source de vérité structurée
+    \item<4-> \textbf{Conception modulaire~:} Une architecture linéaire conçue
+      pour évoluer vers des flux complexes d'auto-correction.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Architecture du système \emph{Med-KAG}}
+  \begin{figure}
+    \centering
+    \includegraphics[width=0.85\textwidth]{architecture.png}
+    \caption{
+      Schéma de l'architecture de Med-KAG
+    }
+  \end{figure}
+
+  \begin{itemize}
+    \item \textbf{Récupérateur (LLM)~:} Identifie les entités et
+      génère une requête \emph{Cypher}.
+    \item \textbf{Extraction (KG)~:} Interroge le graphe pour
+      extraire un sous-graphe (Sub-KG) pertinent.
+    \item \textbf{Générateur (Qwen3)~:} Verbalise le contexte
+      structuré pour produire la réponse finale.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Le c\oe{}ur du système~: \emph{UMLS} et \emph{Cypher}}
+  Le module de récupération transforme la question de l'utilisateur
+  en un langage formel pour interroger le graphe~:
+
+  \medskip{}
+
+  \pause[]
+
+  \begin{itemize}
+    \item<2-> \textbf{Base UMLS~:} Utilisation d'un KG médical structuré, issu
+      de travaux précédents~\cite{medeiros2024harnessing}.
+    \item<3-> \textbf{Requêtes Cypher~:} Le LLM
+      (\emph{Qwen3--235B}~\cite{yang2025qwen3technicalreport}) agit comme
+      traducteur vers le langage
+      \emph{Cypher (Neo4j)}~\cite{neo4j2025overview}.
+    \item<4-> \textbf{Transparence~:} Chaque réponse peut être justifiée par
+      l'extraction du voisinage sémantique des entités.
+  \end{itemize}
+\end{frame}
+

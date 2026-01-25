@@ -4,6 +4,7 @@
 *.fls
 *.log
 *.synctex.gz
+*.synctex(busy)
 *.toc
 *.out
 
@@ -37,6 +38,3 @@
 _minted*
 *.pytxcode
 pythontex-files-*/
-
-## PDF Output
-*.pdf
