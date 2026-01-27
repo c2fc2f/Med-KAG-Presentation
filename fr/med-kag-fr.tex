@@ -10,10 +10,16 @@
 \usepackage[french]{babel}
 \usepackage{graphicx}
 \usepackage{tikz}
-\usepackage{bibentry}
+\usepackage[
+  style=alphabetic
+]{biblatex}
 \usepackage{etoolbox}
 \usepackage{booktabs}
 \usepackage{minted}
+
+\usepackage{csquotes}
+
+\addbibresource{references.bib}
 
 \definecolor{primary}{HTML}{191919}
 \definecolor{secondary}{HTML}{191919}
@@ -90,8 +96,7 @@
 \include{appendix}
 
 \begin{frame}[allowframebreaks]{Références}
-  \bibliographystyle{abbrv}
-  \bibliography{references}
+  \printbibliography{}
 \end{frame}
 
 \end{document}
