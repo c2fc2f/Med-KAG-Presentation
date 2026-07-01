@@ -1,0 +1,263 @@
+\vbadness=10000
+\hfuzz=100pt
+\vfuzz=100pt
+
+\begin{frame}[c]{Motivation~: Hallucinations en Médecine}
+  \begin{columns}[c]
+    \begin{column}{0.60\textwidth}
+      \begin{itemize}
+        \item<1-> \textbf{Potentiel des LLM~:} Analyse des dossiers de santé
+          (électroniques) (\cite{ALGHAMDI2025102528}).
+        \item<2-> \textbf{Manque de fiabilité~:} Risque de générer des données
+          cliniques factuellement incorrectes.
+        \item<3-> \textbf{Raisonnement en boîte noire~:} Difficulté d'auditer
+          la source des affirmations médicales.
+        \item<4-> \textbf{Intégration clinique~:} Les cliniciens exigent des
+          outils transparents et dignes de confiance.
+      \end{itemize}
+    \end{column}
+
+    \begin{column}{0.40\textwidth}
+      \begin{figure}
+        \centering{}
+        \includegraphics[width=\textwidth]{llm.png}
+      \end{figure}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\section{Le RAG en médecine une solution possible~?}
+
+\begin{frame}[c]{Définition~: Native RAG}
+  \centering
+  \includegraphics[width=\textwidth]{native-rag.png}
+\end{frame}
+
+\begin{frame}[c]{Native RAG en médecine}
+  \large
+  \begin{itemize}
+    \item<1->
+      \textbf{MedRAG
+      (\cite{xiong2024benchmarkingretrievalaugmentedgenerationmedicine})~:}
+      Précision de 39.6\% \to{} 70.6\% sur PubMedQA avec GPT-4
+      \vspace{10px}
+    \item<2->
+      \textbf{\cite{hassan2025optimizingmedicalquestionansweringsystems}~:}
+      Précision de 55.4\% \to{} 71.8\% sur PubMedQA avec Llama 2
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[c]{Défauts des Native RAG}
+  \large
+  \begin{itemize}
+    \item<1-> \textbf{Contradictions~:} Possibilité de conflits entre les
+      documents récupérés.
+    \item<2-> \textbf{Redondance~:} Duplication de l'information dans l'index.
+    \item<3-> \textbf{Perte de liens~:} Pas de conservation sémantique
+      explicite entre les chunks.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[c]{Solution \& Définition~: GraphRAG (KAG)}
+  \centering
+  \includegraphics[width=\textwidth]{graphrag.png}
+\end{frame}
+
+\begin{frame}[c]{Graph RAG en médecine}
+  \large
+  \begin{itemize}
+    \item<1->
+      \textbf{MedGraphRAG (\cite{wu-etal-2025-medical})~:}
+      Précision de 75.3\% \to{} 83.3\% sur PubMedQA avec GPT-4
+      \vspace{10px}
+    \item<2->
+      \textbf{MedSumGraph (\cite{KIM2026103311})~:}
+      Précision de 61.40\% \to{} 84.20\% sur PubMedQA avec Llama 3 (70b)
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[c]{Notre proposition}
+  \centering
+  \huge Med-KAG~: Une KAG médicale avec récupération par embedding
+\end{frame}
+
+\begin{frame}[c]{L'UMLS en Graphe de Connaissance}
+  \begin{columns}[c]
+    \begin{column}{0.55\textwidth}
+      \begin{itemize}
+        \item<1-> \textbf{Extraction~:} Analyse des fichiers RRF
+          (MRCONSO, MRREL) issus du métathésaurus UMLS\@.
+        \item<2-> \textbf{Filtrage~:} Sélection des concepts pertinents (CUI)
+          et des relations (REL/RELA).
+        \item<3-> \textbf{Modélisation~:} Conversion vers une base de données
+          orientée graphe (Neo4j).
+        \item<4-> \textbf{Statistique~:} Plus de 13 millions de n\oe{}uds et
+          50 millions de relations interconnectées.
+      \end{itemize}
+    \end{column}
+
+    \begin{column}{0.45\textwidth}
+      \begin{figure}
+        \centering{}
+        \includegraphics[width=0.9\textwidth]{umls.png}
+      \end{figure}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}[c]{Notre architecture}
+  \centering
+  \includegraphics[width=\textwidth]{med-kag.png}
+\end{frame}
+
+\begin{frame}[c, fragile]{Mécanisme de récupération}
+  \centering
+  \begin{minted}[extrakeywords=VECTOR INDEX IF EXISTS FOR ON OPTIONS]{cypher}
+CREATE VECTOR INDEX umls_index IF NOT EXISTS
+FOR (c:UMLSConcept) ON (c.embedding)
+OPTIONS {
+  indexConfig: {
+    `vector.dimensions`: 768,
+    `vector.similarity_function`: 'cosine'
+  }
+};
+  \end{minted}
+  \pause[]
+  \begin{minted}[ignorelexererrors=true]{cypher}
+CALL db.index.vector.queryNodes(
+  'umls_index', $top_k, $embedding
+)
+YIELD node
+MATCH p = (node)-[*0..$neighborhood]-(neighbor)
+RETURN p;
+  \end{minted}
+\end{frame}
+
+\begin{frame}[c]{Exemple de sous-graphe récupéré}
+  \centering
+  \includegraphics[width=0.5\textwidth]{retrieve.png}
+\end{frame}
+
+\section{L'évaluation de Med-KAG sur PubMedQA}
+
+\begin{frame}[c]{PubMedQA}
+  \textbf{Question~:} Spinal subdural hematoma: a sequela of a ruptured
+  intracranial aneurysm?
+
+  \vspace{10px}
+
+  \textbf{Options~:}
+  \vspace{-7px}
+  \begin{itemize}
+    \item \textbf{A} yes
+    \item \textbf{B} no
+    \item \textbf{C} maybe
+  \end{itemize}
+
+  \vfill
+
+  \color{gray}{Note~: PubMedQA contient 500 questions, toutes avec trois
+  réponses possibles.}
+\end{frame}
+
+\begin{frame}[c]{Différentes variations de Med-KAG}
+  \begin{itemize}
+    \item<1-> \textbf{RAG}~: Le modèle augmenté par notre module de
+      récupération.
+      \vspace{10px}
+    \item<2-> \textbf{RAG-Cleaner}~: Le modèle n'est pas contraint par un
+      format de réponse strict lors de la génération. Un modèle tiers
+      intervient a posteriori pour formater la réponse.
+      \vspace{10px}
+    \item<3-> \textbf{RAG-Sum-Cleaner}~: Le sous-graphe récupéré est converti
+      en langage naturel par un modèle intermédiaire.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[c]{Métriques sur les différente variations de Med-KAG}
+  \begin{table}
+    \centering{}
+
+    \begin{tabular}{lcc}
+      \toprule{}
+      \textbf{Modèle} & \textbf{Précision} & \textbf{Temps (s)} \\
+      \midrule
+
+      \textbf{Native} (Qwen3--1.7B)          & 49,00\% (245/500) & 15,04 \\
+      \textbf{Native} (Qwen3--4B)            & 51,60\% (258/500) & 108,33 \\
+      \midrule
+
+      \textbf{RAG} (Qwen3--1.7B)             & 39,60\% (198/500) & 76,21 \\
+      \textbf{RAG} (Qwen3--4B)               & 37,40\% (187/500) & 325,18 \\
+      \textbf{RAG-Cleaner} (Qwen3--1.7B)     & 46,00\% (230/500) & 94,23 \\
+      \textbf{RAG-Sum-Cleaner} (Qwen3--1.7B) & 37,00\% (185/500) & 178,27 \\
+      \bottomrule{}
+    \end{tabular}
+    \pause[]
+    \vspace{-10px}
+    \begin{tabular}{lccc}
+      \toprule{}
+      \textbf{Métrique (RAG)} & \textbf{Moyenne} & \textbf{Médiane} &
+      \textbf{Écart Type} \\
+      \midrule
+
+      N\oe{}uds récupérés & 102.55 & 83,00 & 73.33 \\
+      Arêtes récupérées & 228.74 & 185,00 & 160.61 \\
+      \bottomrule{}
+    \end{tabular}
+    \caption{\texttt{top\_k} = 5 et \texttt{neighborhood} = 1}
+  \end{table}
+\end{frame}
+
+\begin{frame}[c]{Pourquoi les performances sont-elles inférieures~?}
+  \begin{itemize}
+    \item<1-> \textbf{Graphe très dense~:} Malgré un top-k et un voisinage
+      faibles, les sous-graphes récupérés restent volumineux.
+      \vspace{10px}
+    \item<2-> \textbf{Lost in the middle~:} Noyé dans un contexte trop long,
+      le modèle de langue manque l'information pertinente.
+      \vspace{10px}
+    \item<3-> \textbf{UMLS insuffisant~:} À lui seul, il ne suffit pas à
+      l'aide à la décision, ses relations sémantiques sont peu adaptées au
+      raisonnement diagnostique.
+      \vspace{10px}
+    \item<4-> \textbf{Modèles de petite taille~:} Pénalisent la précision,
+      mais nécessaires pour une exécution locale.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[c]{Discussion et Conclusion}
+  \begin{itemize}
+    \item<1-> \textbf{L'optimisation technique~:} La transition vers une
+      génération de requêtes Text-to-Cypher guidée par LLM\@.
+      \vspace{10px}
+    \item<2-> \textbf{L'extension de l'évaluation~:} La validation du système
+      sur d'autres jeux de données biomédicaux et sur plusieurs familles de
+      LLM open-source.
+      \vspace{10px}
+    \item<3-> \textbf{La mesure de la fiabilité~:} L'intégration de métriques
+      explicitement conçues pour quantifier la réduction des hallucinations.
+      \vspace{10px}
+    \item<4-> \textbf{L'application clinique~:} la validation sur des données
+      cliniques réelles issues d'entrepôts de données de santé.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[plain, c, standout]
+  \centering
+  \Huge \textbf{Merci de votre attention~!}
+
+  \vspace{1cm}
+
+  \Large \textbf{Des questions~?}
+
+  \vspace{0.5cm}
+
+  \normalsize
+  contact@c2fc2f.com
+
+  \url{https://github.com/c2fc2f/Med-KAG/tree/0.2.0}
+
+  \includegraphics[width=0.2\textwidth]{qr-code.png}
+\end{frame}
+

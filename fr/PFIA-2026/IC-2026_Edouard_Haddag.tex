@@ -1,0 +1,159 @@
+% LTeX: enabled=false
+\documentclass[
+  10pt,
+  aspectratio=169,
+  table,
+  french
+]{beamer}
+\usetheme{metropolis}
+
+\usepackage[french]{babel}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage[
+  backend=biber,
+  style=authoryear,
+  bibstyle=authortitle,
+  sorting=nyt,
+  maxbibnames=99,
+  maxcitenames=3,
+  doi=false,
+  isbn=false,
+  giveninits=true,
+  uniquename=init,
+  alldates=ymd,
+  datezeros=true
+]{biblatex}
+\usepackage{etoolbox}
+\usepackage{booktabs}
+\usepackage{minted}
+
+\usepackage{csquotes}
+
+\addbibresource{references.bib}
+
+\definecolor{primary}{HTML}{191919}
+\definecolor{secondary}{HTML}{191919}
+
+\setbeamercolor{palette primary}{bg=primary, fg=white}
+\setbeamercolor{progress bar}{fg=primary}
+\setbeamercolor{title separator}{fg=primary}
+
+\setbeamercolor{structure}{fg=secondary}
+\setbeamerfont{structure}{series=\bfseries}
+
+\setbeamercolor{background canvas}{bg=white}
+
+\setbeamerfont{section in toc}{size=\large}
+
+\setbeamertemplate{section in toc}{
+  \inserttocsectionnumber.~\inserttocsection\par
+}
+
+\setbeamerfont{subsection in toc}{size=\normalsize}
+\setbeamertemplate{subsection in toc}{
+  \leavevmode\leftskip=1.5em
+  \inserttocsectionnumber.\inserttocsubsectionnumber~\inserttocsubsection\par
+}
+
+\graphicspath{{./resources/}}
+
+% LTeX: enabled=true
+
+\setbeamercolor{author in head/foot}{bg=white,fg=primary}
+\setbeamercolor{title in head/foot}{bg=white}
+\setbeamercolor{date in head/foot}{bg=white}
+
+\setbeamertemplate{footline}{
+  \leavevmode%
+  \hbox{%
+    \begin{beamercolorbox}[
+        wd=.333333\paperwidth,
+        ht=2.25ex,
+        dp=1ex,
+        center
+      ]{author in head/foot}%
+      \usebeamerfont{author in head/foot}\insertshortauthor{}
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[
+        wd=.333333\paperwidth,
+        ht=2.25ex,
+        dp=1ex,
+        center
+      ]{title in head/foot}%
+      \usebeamerfont{title in head/foot}\insertshorttitle{}
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[
+        wd=.333333\paperwidth,
+        ht=2.25ex,
+        dp=1ex,
+        right
+      ]{date in head/foot}%
+      \insertframenumber{} / \inserttotalframenumber{} \hspace*{0.50cm}
+  \end{beamercolorbox}}%
+  \vskip0pt%
+}
+
+\addtobeamertemplate{title page}{}{
+  \begin{tikzpicture}[remember picture,overlay]
+    \node[
+      anchor=south west,
+      xshift=0.50cm,
+      yshift=0.50cm
+    ] at (current page.south west) {
+      \includegraphics[height=1.2cm]{logo-univ-rouen-normandie-noir.png}
+    };
+    \node[
+      anchor=south,
+      xshift=-0.00cm,
+      yshift=0.50cm
+    ] at (current page.south) {
+      \includegraphics[height=1.2cm]{afia.png}
+    };
+    \node[
+      anchor=south east,
+      xshift=-0.50cm,
+      yshift=0.50cm
+    ] at (current page.south east) {
+      \includegraphics[height=1.2cm]{logo-litis.jpg}
+    };
+  \end{tikzpicture}
+}
+
+\title[Med-KAG~: Un KAG médicale avec récupération par embedding]{
+  Med-KAG, une approche de génération augmentée par connaissances~: analyse
+  des performances et limites de la récupération par embedding
+}
+\subtitle{}
+\author[\textbf{Edouard Haddag} et al.]{
+  \textbf{Edouard Haddag}, Gabriel H.A. Medeiros \& Lina F. Soualmia
+}
+\institute{
+  Université de Rouen Normandie\\
+  Laboratoire d’Informatique, du Traitement de l’Information et des Systèmes
+  (LITIS)
+}
+
+\usepackage{datetime}
+\newdate{date}{02}{07}{2026}
+\date{\displaydate{date}}
+
+\begin{document}
+
+{
+  \hfuzz=60pt
+  \vfuzz=60pt
+  \maketitle
+}
+
+\include{slides}
+
+\begin{frame}[allowframebreaks]{Références}
+  \printbibliography[heading=none]
+\end{frame}
+
+\appendix
+\include{appendix}
+
+\end{document}
+
