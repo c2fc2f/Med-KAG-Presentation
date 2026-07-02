@@ -78,7 +78,7 @@
 
 \begin{frame}[c]{Notre proposition}
   \centering
-  \huge Med-KAG~: Une KAG médicale avec récupération par embedding
+  \huge Med-KAG~: Un KAG médical avec récupération par embedding
 \end{frame}
 
 \begin{frame}[c]{L'UMLS en Graphe de Connaissance}
@@ -174,7 +174,7 @@ RETURN p;
   \end{itemize}
 \end{frame}
 
-\begin{frame}[c]{Métriques sur les différente variations de Med-KAG}
+\begin{frame}[c]{Métriques sur les différentes variations de Med-KAG}
   \begin{table}
     \centering{}
 
@@ -214,8 +214,9 @@ RETURN p;
     \item<1-> \textbf{Graphe très dense~:} Malgré un top-k et un voisinage
       faibles, les sous-graphes récupérés restent volumineux.
       \vspace{10px}
-    \item<2-> \textbf{Lost in the middle~:} Noyé dans un contexte trop long,
-      le modèle de langue manque l'information pertinente.
+    \item<2-> \textbf{Lost in the middle (\cite{liu-etal-2024-lost})~:} Noyé
+      dans un contexte trop long, le modèle de langue manque l'information
+      pertinente.
       \vspace{10px}
     \item<3-> \textbf{UMLS insuffisant~:} À lui seul, il ne suffit pas à
       l'aide à la décision, ses relations sémantiques sont peu adaptées au
